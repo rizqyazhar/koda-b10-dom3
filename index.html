@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey Form</title>
+  </head>
+  <body>
+    <script>
+      const typedInput = [
+        {
+          type: "text",
+          name: "input-nama",
+          id: "input-nama",
+          textContent: "Siapa nama anda?",
+        },
+        {
+          type: "number",
+          name: "input-umur",
+          id: "input-umur",
+          textContent: "Berapa umur anda?",
+        },
+      ];
+
+      const choiceInput = [
+        {
+          title: "Apa jenis kelamin anda?",
+          choices: [
+            {
+              type: "radio",
+              name: "gender",
+              id: "man",
+              text: "Laki-laki",
+            },
+            { type: "radio", name: "gender", id: "woman", text: "Perempuan" },
+          ],
+        },
+        {
+          title: "Apakah anda perokok?",
+          choices: [
+            { type: "radio", name: "yes-or-no", id: "yes", text: "Ya" },
+            { type: "radio", name: "yes-or-no", id: "no", text: "Tidak" },
+          ],
+        },
+        {
+          title: "Jika anda perokok, rokok apa yang anda pernah coba?",
+          choices: [
+            {
+              type: "checkbox",
+              name: "gudang-garam-filter",
+              id: "gudang-garam-filter",
+              text: "Gudang Garam Filter",
+            },
+
+            {
+              type: "checkbox",
+              name: "lucky-strike",
+              id: "lucky-strike",
+              text: "Lucky Strike",
+            },
+            {
+              type: "checkbox",
+              name: "marlboro",
+              id: "marlboro",
+              text: "Marlboro",
+            },
+            { type: "checkbox", name: "esse", id: "esse", text: "Esse" },
+          ],
+        },
+      ];
+
+      const buttons = [
+        { type: "submit", text: "Submit" },
+        { type: "reset", text: "Reset" },
+      ];
+
+      const newForm = document.createElement("form");
+
+      document.body.appendChild(newForm);
+
+      function createInputElement(newLabel, type, id, name) {
+        const newInput = document.createElement("input");
+        if (type === "text" || type === "number") {
+          newLabel.appendChild(newInput);
+        } else {
+          newLabel.prepend(newInput);
+        }
+        newInput.setAttribute("type", type);
+        newInput.setAttribute("id", id);
+        newInput.setAttribute("name", name);
+        return newInput;
+      }
+
+      function generateTypedInput(data) {
+        const { type, name, id, textContent } = data;
+
+        const newLabel = document.createElement("label");
+        newForm.appendChild(newLabel);
+        newLabel.setAttribute("for", id);
+        newLabel.textContent = textContent;
+
+        const newInput = createInputElement(newLabel, type, id, name);
+        newInput.style.display = "block";
+      }
+
+      function generateButton(data) {
+        const { type, text } = data;
+
+        const newButton = document.createElement("button");
+        newForm.appendChild(newButton);
+        newButton.textContent = text;
+        newButton.setAttribute("type", type);
+      }
+
+      function generateChoiceInput(data) {
+        const { title, choices } = data;
+
+        const newDiv = document.createElement("div");
+        newForm.appendChild(newDiv);
+
+        const newSpan = document.createElement("span");
+        newDiv.appendChild(newSpan);
+        newSpan.textContent = title;
+        newSpan.style.display = "block";
+
+        choices.forEach((element) => {
+          const { type, name, id, text } = element;
+
+          const newLabel = document.createElement("label");
+
+          if (type === "checkbox") {
+            const newDiv2 = document.createElement("div");
+            newDiv.appendChild(newDiv2);
+
+            newDiv2.appendChild(newLabel);
+          } else {
+            newDiv.appendChild(newLabel);
+          }
+          newLabel.setAttribute("for", id);
+          newLabel.textContent = text;
+
+          createInputElement(newLabel, type, id, name);
+        });
+      }
+
+      typedInput.forEach((e) => {
+        generateTypedInput(e);
+      });
+
+      choiceInput.forEach((e) => {
+        generateChoiceInput(e);
+      });
+
+      buttons.forEach((e) => {
+        generateButton(e);
+      });
+    </script>
+  </body>
+</html>
